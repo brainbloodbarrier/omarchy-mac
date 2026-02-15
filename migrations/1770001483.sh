@@ -96,7 +96,8 @@ if [ -f "${BASHRC}" ] && ! grep -q "Auto-launch zsh shell" "${BASHRC}" 2>/dev/nu
 [[ $- != *i* ]] && return
 
 # Auto-launch zsh shell if in interactive bash
-if command -v zsh &> /dev/null; then
+# Skip when running inside Warp terminal (Warp has its own shell bootstrap)
+if command -v zsh &> /dev/null && [[ "$TERM_PROGRAM" != "WarpTerminal" ]]; then
   if [[ $(ps --no-header --pid=$PPID --format=comm) != "zsh" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 ]]
   then
     shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
